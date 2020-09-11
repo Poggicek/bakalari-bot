@@ -13,7 +13,6 @@ export class Authenticator {
 
 	async login (user: User) {
 		const params: AuthParams = { client_id: 'ANDR', grant_type: 'password', username: user.username, password: user.password };
-
 		let res = await fetch(process.env.ENDPOINT + '/api/login', {
 			method: 'POST', body: new URLSearchParams(<any>params).toString(),
 		})
