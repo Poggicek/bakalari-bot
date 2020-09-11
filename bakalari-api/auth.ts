@@ -24,7 +24,7 @@ export class Authenticator {
 		}
 
 		this.user = { ...user, ...body }
-		console.log(`Logged in bakalar as ${this.user['bak:UserId']}`)
+		setTimeout(() => this.login(this.user), this.user.expires_in * 1000)
 	}
 
 	get data () {
