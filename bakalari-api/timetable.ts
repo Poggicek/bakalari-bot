@@ -30,7 +30,7 @@ export class TimeTable {
 		if (!currentData.Hours) return currentData = body
 		body.Days.forEach((r: any, i: any) => {
 			r.Atoms.forEach((hour: any, x: any) => {
-				if (JSON.stringify(currentData.Days[i].Atoms[x].Change) !== JSON.stringify(hour.Change)) {
+				if (JSON.stringify(currentData.Days[i].Atoms[x]?.Change) !== JSON.stringify(hour.Change)) {
 					if (['Removed', 'Canceled'].includes(hour.Change?.ChangeType))
 						this.manageMessage(currentData.Days[i].Atoms[x], hour, body)
 				}
@@ -39,10 +39,13 @@ export class TimeTable {
 	}
 
 	manageMessage (before: any, after: any, body: any) {
-		if (!before.SubjectId) return
+		if (!before?.SubjectId) return
+		let subjectName = body.Subjects.filter((r: any) => r.Id == before?.SubjectId)[0]?.Name
+		if (!subjectName) return
+
 		const messageEmbed = new MessageEmbed()
 			.setTitle('')
-			.setDescription(`V **${new Date(after.Change.Day).toLocaleString('cs-Cz', { weekday: 'long', day: 'numeric', month: 'long' })}** odpadá ${after.Change.Hours} (${after.Change.Time}) **${body.Subjects.filter((r: any) => r.Id == before.SubjectId)[0].Name}**`)
+			.setDescription(`V **${new Date(after.Change.Day).toLocaleString('cs-Cz', { weekday: 'long', day: 'numeric', month: 'long' })}** odpadá ${after.Change.Hours} (${after.Change.Time}) **${body.Subjects.filter((r: any) => r.Id == before?.SubjectId)[0]?.Name}**`)
 		this.client.channels.fetch(process.env.DISCORD_ANNOUNCE_CHANNEL).then((channel: TextChannel) => {
 			channel.send('https://cdn.frankerfacez.com/emoticon/61496/4')
 			channel.send(messageEmbed)
