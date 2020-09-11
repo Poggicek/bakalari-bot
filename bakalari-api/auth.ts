@@ -1,17 +1,12 @@
 import { User, AuthParams } from '../types/user';
 import { throwError } from './error-handler';
+import Api from './api'
 import fetch from 'node-fetch';
 
 export class Authenticator {
 	user: User;
 
-	constructor(username: string, password: string) {
-		this.user = { username: username, password: password }
-
-		this.login(this.user)
-	}
-
-	async login (user: User) {
+	async login (user: User, looped?: Boolean) {
 		const params: AuthParams = { client_id: 'ANDR', grant_type: 'password', username: user.username, password: user.password };
 		let res = await fetch(process.env.ENDPOINT + '/api/login', {
 			method: 'POST', body: new URLSearchParams(<any>params).toString(),
@@ -23,7 +18,12 @@ export class Authenticator {
 		}
 
 		this.user = { ...user, ...body }
-		setTimeout(() => this.login(this.user), this.user.expires_in * 1000)
+
+		if (!looped) {
+			Api.events.emit('login')
+		}
+
+		setTimeout(() => this.login(this.user, true), this.user.expires_in * 1000)
 	}
 
 	get data () {
