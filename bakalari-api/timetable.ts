@@ -39,9 +39,10 @@ export class TimeTable {
 	}
 
 	manageMessage (before: any, after: any, body: any) {
+		if (!before.SubjectId) return
 		const messageEmbed = new MessageEmbed()
 			.setTitle('')
-			.setDescription(`V **${new Date(after.Change.Day).toLocaleString('cs-Cz', { weekday: 'long', day: 'numeric', month: 'long' })}** odpadá ${before.Change.Hours} (${before.Change.Time}) **${body.Subjects.filter((r: any) => r.Id == before.SubjectId)[0].Name}**`)
+			.setDescription(`V **${new Date(after.Change.Day).toLocaleString('cs-Cz', { weekday: 'long', day: 'numeric', month: 'long' })}** odpadá ${after.Change.Hours} (${after.Change.Time}) **${body.Subjects.filter((r: any) => r.Id == before.SubjectId)[0].Name}**`)
 		this.client.channels.fetch(process.env.DISCORD_ANNOUNCE_CHANNEL).then((channel: TextChannel) => {
 			channel.send('https://cdn.frankerfacez.com/emoticon/61496/4')
 			channel.send(messageEmbed)
