@@ -1,0 +1,22 @@
+{
+  "name": "Bakalari-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "@types/node": "^14.6.1",
+    "dateformat": "^3.0.3",
+    "discord.js": "^12.3.1",
+    "dotenv": "^8.2.0",
+    "node-fetch": "^2.6.1"
+  },
+  "devDependencies": {
+    "@types/node-fetch": "^2.5.7"
+  },
+  "scripts": {
+    "start": "tsc-watch --onSuccess \"node index.js\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
