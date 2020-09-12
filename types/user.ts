@@ -10,6 +10,7 @@ export interface User {
 export interface AuthParams {
 	client_id: string;
 	grant_type: string;
-	username: string;
-	password: string;
+	username?: string;
+	password?: string;
+	refresh_token?: string;
 }
